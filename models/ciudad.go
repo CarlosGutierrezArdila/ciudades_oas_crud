@@ -10,7 +10,7 @@ import (
 )
 
 type Ciudad struct {
-	Id      int    `orm:"column(id);pk"`
+	Id      int    `orm:"column(id);pk;auto"`
 	Nombre  string `orm:"column(nombre)"`
 	Capital bool   `orm:"column(capital)"`
 	PaisId  *Pais  `orm:"column(pais_id);rel(fk)"`
@@ -48,7 +48,7 @@ func GetCiudadById(id int) (v *Ciudad, err error) {
 func GetAllCiudad(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Ciudad))
+	qs := o.QueryTable(new(Ciudad)).RelatedSel()
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
